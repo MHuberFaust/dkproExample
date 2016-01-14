@@ -30,7 +30,6 @@ with open(outputFile, "w", encoding='utf-8') as f:
     f.write(poets)
     print("\nFollowing authors successfully saved in 'authors.txt':")
     print(poets)
-    f.close()
 
 with open(outputFile, "r", encoding='utf-8') as f:
     for author in list(f):
