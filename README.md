@@ -10,9 +10,8 @@ Installation
 3. Download or checkout __extractWiki.py__
 
 
-To install the library simply run:
+To install the library on OS X and Linux simply run:
 
-On OS X and Linux:
 ```
 python3   -m pip install wikipedia
 ```
