@@ -21,7 +21,7 @@ wikiSection = input("Select a section of the page: ")
 outputDir = input("Select directory for the output files: ")
 
 # ------------------------------------------------------------
-#  Extract names and save in ~/poets.txt
+#  Extract names and save in ~/authors.txt
 # ------------------------------------------------------------
 
 with open(outputFile, "w", encoding='utf-8') as f:
