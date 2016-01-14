@@ -57,5 +57,5 @@ with open(outputFile, "r", encoding='utf-8') as f:
 # ------------------------------------------------------------
 
         with open(outputDir+"/"+author+".txt", "w", encoding='utf-8') as f:
-            f.write(pageContent.content.replace("=", "").replace("==", "").replace("===", "").replace("Bearbeiten", "")) # Markup entfernen eleganter möglich?
+            f.write(pageContent.content.replace("=", "").replace("==", "").replace("===", "").replace("Bearbeiten", ""))
             print(author + "---DONE\n")
