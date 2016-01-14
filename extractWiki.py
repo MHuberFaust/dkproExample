@@ -56,6 +56,6 @@ with open(outputFile, "r", encoding='utf-8') as f:
 #  Creating a file for each author including the wiki content
 # ------------------------------------------------------------
 
-        with open(outputDir+"/"+author+".txt", "w", encoding='utf-8') as f:
+        with open(outputDir+"/"+re.sub("\s", "", author)+".txt", "w", encoding='utf-8') as f:
             f.write(pageContent.content.replace("=", "").replace("==", "").replace("===", "").replace("Bearbeiten", ""))
             print(author + "---DONE\n")
