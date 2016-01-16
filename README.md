@@ -17,7 +17,7 @@ To be continued...
 
 Installation
 ------------
-1. Install Python 3.5
+1. Install Python 3.x
 2. Install the wikipedia library
 3. Download or checkout __extractWiki.py__
 
