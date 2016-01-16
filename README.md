@@ -33,6 +33,11 @@ To run the script:
 python3 ~/extractWiki.py
 ```
 
-and follow the instructions.
+and
+
+```
+py -3 ~/extractWiki.py
+```
+respectively for Windows and follow the instructions.
 
 You can download the DARIAH-DKPro-Wrapper [here](https://github.com/DARIAH-DE/DARIAH-DKPro-Wrapper).
