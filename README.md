@@ -5,7 +5,7 @@ Example for a workflow including the DKPro-Wrapper.
 
 _extractWiki.py_ is a commandline tool which extracts content from the German Wikipedia.
 
-Open your terminal and run following command:
+Open your terminal, run following command:
 
 ```
 python3 ~/extractWiki.py
