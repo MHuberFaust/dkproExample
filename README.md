@@ -16,22 +16,23 @@ Installation
 3. Download or checkout __extractWiki.py__
 
 
-To install the library on OS X and Linux simply run:
+To install the library on OS X and Linux open your terminal and simply run:
 
 ```
 python3   -m pip install wikipedia
 ```
 
-Or on Windows:
+or on Windows:
 ```
 py -3   -m pip install wikipedia
 ```
 
-Open your terminal, run following command:
+To run the script:
 
 ```
 python3 ~/extractWiki.py
 ```
 
 and follow the instructions.
+
 You can download the DARIAH-DKPro-Wrapper [here](https://github.com/DARIAH-DE/DARIAH-DKPro-Wrapper).
