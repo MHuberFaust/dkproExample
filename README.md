@@ -3,7 +3,7 @@ DKProExample
 
 Example for a workflow including the DKPro-Wrapper.
 
-_extractWiki.py_ is a commandline tool which extracts content from the German Wikipedia.
+_extractWiki.py_ extracts content from the German Wikipedia.
 
 To be continued...
 
