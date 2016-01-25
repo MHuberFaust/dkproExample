@@ -11,7 +11,7 @@ author: MHuber
 ##wegen: "Matthäus Megerle und dessen Frau Ursula ->B-BPer (geborene Wagner->BPer)"
 
 #für jeden Text eine Datei in einem Graphendatenformat abspeichern? o. on the fly generieren?
-
+#Gewichtungen sollten bestenfalls gleich hier vorgenommen werden
 
 
 
