@@ -25,6 +25,10 @@ Weitere Vorgehensweise:
 #NamedEntity: row[14]
 import csv
 from collections import defaultdict
+import itertools
+import glob
+import os
+import networkx as nx
 '''
 with open ('/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv', encoding='utf-8') as csvfile:
     readCSV = csv.reader(csvfile, delimiter='\t')
@@ -47,19 +51,50 @@ def neCount(inputfile):
         for row in readCSV:
             if row['NamedEntity']!="_" and row['CPOS']!="PUNC":
                 lemma.append(row['Lemma'])
-                print (row['Lemma'], row['POS'],row['NamedEntity'])
+                #print (row['Lemma'], row['POS'],row['NamedEntity'])
             else:
                 #fill dict
                 if lemma:
                     joinedLemma=' '.join(lemma)
-                    print("this is the Lemma "+joinedLemma)
+                    #print("this is the Lemma "+joinedLemma)
                     necounter[joinedLemma]+=1
                     lemma=[]
                 
         #print(necounter['Sancta Clara'])
     #print(necounter['Sancta Clara'])
     return necounter
+    #looks like: {Name:Vorkommen,
+    #             Name:Vorkommen} e.g. "Sancta Clara": 5
           
+def compareNECounter(nedict1,nedict2):
+    weight = 0
+    for key in nedict1.keys():
+        if key in nedict2.keys():
+            weight+=1
+    print("this is the weight: " + str(weight))
+    return weight
+
+
+def createGraph():
+    
+    G=nx.Graph()
+    fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
+    
+    print("gimme dad fileList")
+    print(fileList)
+    
+    #maybe redundant since according to http://snap.stanford.edu/class/cs224w-2012/nx_tutorial.pdf
+    #adding edges without nodes results in nx adding nodes automatically
+    G.add_nodes_from(fileList)#is it possible to add a list of strings as nodes?
+    for a,b in itertools.combinations(fileList,2):
+        print(a, b)
+        weight = compareNECounter(neCount(a), neCount(b))
+        if weight > 0:
+            G.add_edge(a, b, {'weight': weight})
+            #create edges a->b (weight)
+
+    return G
+    
           
-          
-neCount("/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv")      
+#neCount("/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv")
+createGraph()      
