@@ -80,19 +80,20 @@ def createGraph():
     G=nx.Graph()
     fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
     
-    print("gimme dad fileList")
-    print(fileList)
+    #print("gimme dad fileList")
+    #print(fileList)
     
     #maybe redundant since according to http://snap.stanford.edu/class/cs224w-2012/nx_tutorial.pdf
     #adding edges without nodes results in nx adding nodes automatically
-    G.add_nodes_from(fileList)#is it possible to add a list of strings as nodes?
+    #G.add_nodes_from(fileList)#is it possible to add a list of strings as nodes?
     for a,b in itertools.combinations(fileList,2):
         print(a, b)
         weight = compareNECounter(neCount(a), neCount(b))
         if weight > 0:
             G.add_edge(a, b, {'weight': weight})
             #create edges a->b (weight)
-
+    
+    print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
     
           
