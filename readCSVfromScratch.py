@@ -30,6 +30,7 @@ import glob
 import os
 import networkx as nx
 import matplotlib.pyplot as plt
+import re
 '''
 with open ('/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv', encoding='utf-8') as csvfile:
     readCSV = csv.reader(csvfile, delimiter='\t')
@@ -77,7 +78,7 @@ def compareNECounter(nedict1,nedict2):
 
 
 def createGraph():
-    
+    #regex =
     G=nx.Graph()
     fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
     
@@ -88,10 +89,19 @@ def createGraph():
     #adding edges without nodes results in nx adding nodes automatically
     #G.add_nodes_from(fileList)#is it possible to add a list of strings as nodes?
     for a,b in itertools.combinations(fileList,2):
-        print(a, b)
+        #print (a)
+        #astr = re.search("Christoph",a)#depends on directory... not sure how to implement
+        #bstr = re.search("(?=testout\/).*(?=\.txt\.csv)",b)
+        #astr = astr.group(0)
+        #bstr = bstr.group(0)
+        aList = a.split('/')
+        bList = b.split('/')
+        aName = aList[-1]
+        bName = bList[-1]
+
         weight = compareNECounter(neCount(a), neCount(b))
         if weight > 0:
-            G.add_edge(a, b, {'weight': weight})
+            G.add_edge(aName, bName, {'weight': weight})
             #create edges a->b (weight)
     
     print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
@@ -99,6 +109,7 @@ def createGraph():
     
           
 #neCount("/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv")
-nx.draw(createGraph())
+nx.draw_networkx(createGraph(), with_labels=True)
+plt.axis('off')
 plt.savefig("graph.png")
 
