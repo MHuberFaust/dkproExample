@@ -29,6 +29,7 @@ import itertools
 import glob
 import os
 import networkx as nx
+import matplotlib.pyplot as plt
 '''
 with open ('/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv', encoding='utf-8') as csvfile:
     readCSV = csv.reader(csvfile, delimiter='\t')
@@ -98,4 +99,6 @@ def createGraph():
     
           
 #neCount("/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv")
-createGraph()      
+nx.draw(createGraph())
+plt.savefig("graph.png")
+
