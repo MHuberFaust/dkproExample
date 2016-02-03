@@ -94,6 +94,8 @@ def createGraph():
         #bstr = re.search("(?=testout\/).*(?=\.txt\.csv)",b)
         #astr = astr.group(0)
         #bstr = bstr.group(0)
+        
+        #so ugly
         aList = a.split('/')
         bList = b.split('/')
         aName = aList[-1]
