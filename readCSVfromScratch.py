@@ -47,7 +47,7 @@ with open ('/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.cs
 def neCount(inputfile):
     necounter=defaultdict(int)
     with open (inputfile, encoding='utf-8') as csvfile:
-        readCSV = csv.DictReader(csvfile, delimiter='\t')
+        readCSV = csv.DictReader(csvfile, delimiter='\t', quoting=csv.QUOTE_NONE)
         lemma =[]
         
         for row in readCSV:
@@ -98,11 +98,18 @@ def createGraph():
         #so ugly
         aList = a.split('/')
         bList = b.split('/')
-        aName = aList[-1]
-        bName = bList[-1]
+        aList = aList[-1].split('.')
+        bList = bList[-1].split('.')
+        aName = aList[0]
+        bName = bList[0]
+        print(aName +'  |  ' + bName)
+        #aName = aList[-1]
+        #bName = bList[-1]
+        
+
 
         weight = compareNECounter(neCount(a), neCount(b))
-        if weight > 0:
+        if weight > 10:
             G.add_edge(aName, bName, {'weight': weight})
             #create edges a->b (weight)
     
@@ -114,4 +121,6 @@ def createGraph():
 nx.draw_networkx(createGraph(), with_labels=True)
 plt.axis('off')
 plt.savefig("graph.png")
-
+nx.draw_circular(createGraph(), with_labels=True)
+plt.axis('off')
+plt.savefig("graphcircular.png")
