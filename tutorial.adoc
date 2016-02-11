@@ -145,6 +145,17 @@ def compare_ne_counter(ne_dict1, ne_dict2):
     return weight
 ----
 
+New items:
+
+[source, python]
+----
+def extract_basename(file_path):
+    new_item = os.path.basename(file_path)
+    newer_item = os.path.splitext(new_item)
+    newer_newer_item = os.path.splitext(newer_item[0])
+    return newer_newer_item[0]
+----
+
 Finally creating the graph:
 
 [source, python]
@@ -153,14 +164,17 @@ def create_graph(input_folder):
     G = nx.Graph()
     file_list = glob.glob(input_folder)
 
+    for item in file_list:
+        G.add_node(extract_basename(item))
+        
     for a, b in itertools.combinations(file_list, 2):
-        a_list = a.split('/')
-        b_list = b.split('/')
-        a_list = a_list[-1].split('.')
-        b_list = b_list[-1].split('.')
-        a_name = a_list[0]
-        b_name = b_list[0]
-        print(a_name +'  |  ' + b_name)
+        #a_list = a.split('/')
+        #b_list = b.split('/')
+        #a_list = a_list[-1].split('.')
+        #b_list = b_list[-1].split('.')
+        #a_name = a_list[0]
+        #b_name = b_list[0]
+        #print(a_name +'  |  ' + b_name)
 
         weight = compare_ne_counter(ne_count(a), ne_count(b))
         if weight > 10:
