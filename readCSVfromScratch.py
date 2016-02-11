@@ -76,6 +76,11 @@ def compareNECounter(nedict1,nedict2):
     print("this is the weight: " + str(weight))
     return weight
 
+def extractBasename(filePath):
+    newItem = os.path.basename(filePath)
+    newerItem = os.path.splitext(newItem)
+    newerNewerItem = os.path.splitext(newerItem[0])
+    return newerNewerItem[0]
 
 def createGraph():
     #regex =
@@ -84,10 +89,17 @@ def createGraph():
     
     #print("gimme dad fileList")
     #print(fileList)
-    
-    #maybe redundant since according to http://snap.stanford.edu/class/cs224w-2012/nx_tutorial.pdf
-    #adding edges without nodes results in nx adding nodes automatically
-    #G.add_nodes_from(fileList)#is it possible to add a list of strings as nodes?
+    for item in fileList:
+        G.add_node(extractBasename(item))
+        #itemList = item.split('/')
+        #itemList = re.search('(.+?)(\.txt\.csv)', itemList[-1])
+        #itemList= itemList[-1].split('.')
+        #for item in itemList:
+            #print (item)
+        #nodeName = itemList[0]
+        #print(nodeName)
+        #nodeList.append(nodeName)
+        #G.add_node(nodeName)
     for a,b in itertools.combinations(fileList,2):
         #print (a)
         #astr = re.search("Christoph",a)#depends on directory... not sure how to implement
@@ -96,22 +108,24 @@ def createGraph():
         #bstr = bstr.group(0)
         
         #so ugly
-        aList = a.split('/')
-        bList = b.split('/')
-        aList = aList[-1].split('.')
-        bList = bList[-1].split('.')
-        aName = aList[0]
-        bName = bList[0]
-        print(aName +'  |  ' + bName)
+        #aList = a.split('/')
+        #bList = b.split('/')
+        #aList = aList[-1].split('.')
+        #bList = bList[-1].split('.')
+        #aName = aList[0]
+        #bName = bList[0]
+        #print(aName +'  |  ' + bName)
         #aName = aList[-1]
         #bName = bList[-1]
         
 
 
         weight = compareNECounter(neCount(a), neCount(b))
+
         if weight > 10:
-            G.add_edge(aName, bName, {'weight': weight})
+            G.add_edge(extractBasename(a), extractBasename(b), {'weight': weight})
             #create edges a->b (weight)
+
     
     print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
