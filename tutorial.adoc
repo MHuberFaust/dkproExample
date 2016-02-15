@@ -1,0 +1,210 @@
+*Example Recipe: Network Visualization in Python*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduction... About networks etc. Which packages?
+
+Setting up the Environment
+++++++++++++++++++++++++++
+
+As in the examples above explained you have to install three packages to realize this recipe.
+The following command will download and install the required packages:
+
+----
+pip3 install wikipedia
+pip3 install networkx
+pip3 install matplotlib.pyplot
+----
+
+Part 1: Crawling Wikipedia
+++++++++++++++++++++++++++
+
+The first part of the recipe is designed for interactive use.
+It is recommended to copy the following code into a text file and interpret it by Python.
+For more clearness the whole script is divided into small parts with explanations what's going on in the single parts.
+After the package installation you can use the following import statements in your first (of two) script:
+
+[source, python]
+----
+import wikipedia
+import re
+----
+
+In the following part you will create a new text file including a list of American writers you want to set in relation.
+The function requires the path to your working directory, your desired Wikipedia page (e. g. Liste amerikanischer Schriftsteller) 
+and a section of this page (e. g. A):
+
+[source, python]
+----
+def create_authors(working_directory, wiki_page, wiki_section):
+    with open(working_directory + "/authors.txt", "w", encoding='utf-8') as authors:
+        full_content = wikipedia.page(wiki_page)
+        selected_content = full_content.section(wiki_section)
+        only_name = re.sub("[\(\[].*?[\)\]]", "", selected_content)
+        authors.write(only_name)
+        print("\nFollowing authors successfully saved in 'authors.txt':\n", only_name)
+----
+
+Now you can crawl the whole Wikipedia (in this recipe German Wikipedia) with your determined authors list:
+
+[source, python]
+----
+def crawl_wikipedia(working_directory, output_directory):
+    with open(working_directory + "/authors.txt", "r", encoding="utf-8") as authors:
+        for author in list(authors):
+            print(author)
+
+            try:
+                page_title = wikipedia.page(author)
+                if page_title:
+                    print("Check")
+                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as author:
+                        author.write(page_title.content)
+                        print(author)
+                        print("--- DONE")
+
+                else:
+                    print("So sad")
+                    
+            except wikipedia.exceptions.DisambiguationError:
+                pass
+            except wikipedia.exceptions.HTTPTimeoutError:
+                pass
+            except wikipedia.exceptions.RedirectError:
+                pass
+            except wikipedia.exceptions.PageError:
+                pass
+----
+
+Now you have to call your defined functions:
+
+[source, python]
+----
+wikipedia.set_lang("de")  # change language
+working_directory = input("Select your working directory (authors.txt will be saved in it): ")
+create_authors(working_directory, input("Enter a Wikipedia page, for an example press enter: ") or "Liste amerikanischer Schriftsteller", input("Select one section of this page, for an example press enter: ") or "A")
+crawl_wikipedia(working_directory, input("Enter path to output folder: "))
+----
+
+If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
+one text file for each author listet in authors.txt containing the specific Wikipedia page.
+
+Part 2: Using DKPro Wrapper and NetworkX to visualize networks
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+So far, in the second part of the recipe you can analyze your previously created text files with the DKPro Wrapper. 
+How to process a collection of files in the same folder is explained further above.
+After creating a .csv file for each text file you ingest it in Python after importing the required packages. 
+Create the second (and last) script starting with:
+
+[source, python]
+----
+import csv
+from collections import defaultdict
+import itertools
+import glob
+import os
+import networkx as nx
+import matplotlib.pyplot as plt
+import re
+----
+
+The following function ingests the annotated file. B-PER as first name and I-PER as last name. The function saves both B-PER 
+and I-PER in a dictionary. Only B-PER and one I-PER in combination will be saved as one full name. Every name matches one 
+node.
+
+[source, python]
+----
+def ne_count(input_file):
+    ne_counter = defaultdict(int)
+    with open (input_file, encoding='utf-8') as csv_file:
+        read_csv = csv.DictReader(csv_file, delimiter = '\t', quoting = csv.QUOTE_NONE)
+        lemma = []
+
+        for row in read_csv:
+            if row['NamedEntity'] != "_" and row['CPOS'] != "PUNC":
+                lemma.append(row['Lemma'])
+            else:
+                if lemma:
+                    joined_lemma = ' '.join(lemma)
+                    ne_counter[joined_lemma]+=1
+                    lemma = []
+
+    return ne_counter
+----
+
+Comparing the dictionaries:
+
+[source, python]
+----
+def compare_ne_counter(ne_dict1, ne_dict2):
+    weight = 0
+    for key in ne_dict1.keys():
+        if key in ne_dict2.keys():
+            weight+=1
+    print("this is the weight: " + str(weight))
+    return weight
+----
+
+New items:
+
+[source, python]
+----
+def extract_basename(file_path):
+    new_item = os.path.basename(file_path)
+    newer_item = os.path.splitext(new_item)
+    newer_newer_item = os.path.splitext(newer_item[0])
+    return newer_newer_item[0]
+----
+
+Finally creating the graph:
+
+[source, python]
+----
+def create_graph(input_folder):
+    G = nx.Graph()
+    file_list = glob.glob(input_folder)
+
+    for item in file_list:
+        G.add_node(extract_basename(item))
+        
+    for a, b in itertools.combinations(file_list, 2):
+        #a_list = a.split('/')
+        #b_list = b.split('/')
+        #a_list = a_list[-1].split('.')
+        #b_list = b_list[-1].split('.')
+        #a_name = a_list[0]
+        #b_name = b_list[0]
+        #print(a_name +'  |  ' + b_name)
+
+        weight = compare_ne_counter(ne_count(a), ne_count(b))
+        if weight > 10:
+            G.add_edge(a_name, b_name, {'weight': weight})
+
+    print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
+    return G
+----
+
+So we can draw it:
+
+[source, python]
+----
+input_folder = input("Select input folder: ") + "/*"
+output_folder = input("Select output folder: ")
+
+nx.draw_networkx(create_graph(input_folder), with_labels=True)
+plt.axis('off')
+plt.savefig(output_folder + "/graph.png")
+nx.draw_circular(create_graph(input_folder)), with_labels=True)
+plt.axis('off')
+plt.savefig(output_folder + "/circular.png")
+----
+
+Output
+++++++
+Your output could look like this:
+
+image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular.png?raw=true[image]
+image:https://github.com/MHuberFaust/dkproExample/blob/master/graph.png?raw=true[image]
+
+Discussion
+++++++++++
