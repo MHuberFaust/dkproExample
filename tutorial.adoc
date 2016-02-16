@@ -7,21 +7,20 @@ Setting up the Environment
 ++++++++++++++++++++++++++
 
 As in the examples above explained you have to install three packages to realize this recipe.
-The following command will download and install the required packages:
+Issue the following command at the command line to download and install the needed packages:
 
 ----
 pip3 install wikipedia
 pip3 install networkx
-pip3 install matplotlib.pyplot
 ----
+
+Also make sure the package __matplotlib__ is installed. For more details have a look at the Topic Modelling in Python recipe.
 
 Part 1: Crawling Wikipedia
 ++++++++++++++++++++++++++
 
-The first part of the recipe is designed for interactive use.
-It is recommended to copy the following code into a text file and interpret it by Python.
-For more clearness the whole script is divided into small parts with explanations what's going on in the single parts.
-After the package installation you can use the following import statements in your first (of two) script:
+The first part of the recipe is designed for interactive use. It is recommended to copy the following code into a text file and interpret it by Python. For more clearness the whole script is divided into small parts with explanations what is going on in the single parts.
+Use the following import statements in your first script after the first line:
 
 [source, python]
 ----
@@ -29,9 +28,7 @@ import wikipedia
 import re
 ----
 
-In the following part you will create a new text file including a list of American writers you want to set in relation.
-The function requires the path to your working directory, your desired Wikipedia page (e. g. Liste amerikanischer Schriftsteller) 
-and a section of this page (e. g. A):
+In the following part we will create a new text file including a list of persons you want to set in relation:
 
 [source, python]
 ----
@@ -49,12 +46,12 @@ def create_authors(working_directory, wiki_page, wiki_section):
     with open(working_directory + "/authors.txt", "w", encoding='utf-8') as authors:
         full_content = wikipedia.page(wiki_page)
         selected_content = full_content.section(wiki_section)
-        only_name = re.sub("[ \t\r\n\f]+[\(].*?[\)]","", selected_content)  # erases characters after full name
+        only_name = re.sub("[ \t\r\n\f]+[\(\[].*?[\]\)]","", selected_content)  # erases characters after full name
         authors.write(only_name)
         print(only_name)
 ----
 
-Now you can crawl the whole Wikipedia (in this recipe German Wikipedia) with your determined authors list:
+To crawl the Wikipedia database with your determined authors list, add the following code to your script:
 
 [source, python]
 ----
@@ -90,7 +87,7 @@ def crawl_wikipedia(authors_file, output_directory):
                 pass
 ----
 
-Now you have to call your defined functions:
+Finally we are putting everything together:
 
 [source, python]
 ----
@@ -104,16 +101,18 @@ if __name__ == "__main__":
     main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 ----
 
-To run the script type in your command line following command:
+To run the script type the following command in your command line:
 
 `python3 script workingdirectory outputdirectory "wikipage" "wikisection"`
+
+and press Enter.
 
 For example:
 
 `python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
-one text file for each author listet in authors.txt containing the specific Wikipedia page.
+one text file for each author listed in authors.txt containing the specific Wikipedia page.
 
 Part 2: Using DKPro Wrapper and NetworkX to visualize networks
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
