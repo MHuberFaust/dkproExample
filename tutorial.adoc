@@ -36,35 +36,50 @@ and a section of this page (e. g. A):
 [source, python]
 ----
 def create_authors(working_directory, wiki_page, wiki_section):
+    """
+    Gathers names from Wikipedia
+
+    :param working_directory: path to the output folder
+    :param wiki_page: e.g. Liste deutschsprachiger Lyriker
+    :param wiki_section: e.g. 12. Jahrhundert
+    :return: authors.txt
+    """
+
+    print("\nCreating authors.txt ...")
     with open(working_directory + "/authors.txt", "w", encoding='utf-8') as authors:
         full_content = wikipedia.page(wiki_page)
         selected_content = full_content.section(wiki_section)
-        only_name = re.sub("[\(\[].*?[\)\]]", "", selected_content)
+        only_name = re.sub("[ \t\r\n\f]+[\(].*?[\)]","", selected_content)  # erases characters after full name
         authors.write(only_name)
-        print("\nFollowing authors successfully saved in 'authors.txt':\n", only_name)
+        print(only_name)
 ----
 
 Now you can crawl the whole Wikipedia (in this recipe German Wikipedia) with your determined authors list:
 
 [source, python]
 ----
-def crawl_wikipedia(working_directory, output_directory):
-    with open(working_directory + "/authors.txt", "r", encoding="utf-8") as authors:
-        for author in list(authors):
-            print(author)
+def crawl_wikipedia(authors_file, output_directory):
+    """
+    Crawls Wikipedia with the content of authors.txt
 
+    :param authors_file: path to the previously created authors.txt
+    :param output_directory: path to the output folder
+    :return: {author}.txt
+    """
+
+    print("\nCrawling Wikipedia ...")
+    with open(authors_file, "r", encoding="utf-8") as authors:
+        for author in authors.read().splitlines():
             try:
                 page_title = wikipedia.page(author)
                 if page_title:
-                    print("Check")
-                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as author:
-                        author.write(page_title.content)
-                        print(author)
-                        print("--- DONE")
+                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as new_author:
+                        new_author.write(page_title.content)
+                        print(author + ": saved")
 
                 else:
                     print("So sad")
-                    
+
             except wikipedia.exceptions.DisambiguationError:
                 pass
             except wikipedia.exceptions.HTTPTimeoutError:
@@ -79,11 +94,23 @@ Now you have to call your defined functions:
 
 [source, python]
 ----
-wikipedia.set_lang("de")  # change language
-working_directory = input("Select your working directory (authors.txt will be saved in it): ")
-create_authors(working_directory, input("Enter a Wikipedia page, for an example press enter: ") or "Liste amerikanischer Schriftsteller", input("Select one section of this page, for an example press enter: ") or "A")
-crawl_wikipedia(working_directory, input("Enter path to output folder: "))
+def main(working_directory, output_directory, wiki_page, wiki_section):
+    wikipedia.set_lang("de")    # change language
+    create_authors(working_directory, wiki_page, wiki_section)
+    crawl_wikipedia(sys.argv[2] + "/authors.txt", output_directory)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 ----
+
+To run the script type in your command line following command:
+
+`python3 workingdirectory outputdirectory "wikipage" "wikisection"`
+
+For example:
+
+`python3 /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
 one text file for each author listet in authors.txt containing the specific Wikipedia page.
