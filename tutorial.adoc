@@ -106,11 +106,11 @@ if __name__ == "__main__":
 
 To run the script type in your command line following command:
 
-`python3 workingdirectory outputdirectory "wikipage" "wikisection"`
+`python3 script workingdirectory outputdirectory "wikipage" "wikisection"`
 
 For example:
 
-`python3 /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
+`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
 one text file for each author listet in authors.txt containing the specific Wikipedia page.
