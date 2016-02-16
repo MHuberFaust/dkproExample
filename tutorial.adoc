@@ -109,7 +109,7 @@ and press Enter.
 
 For example:
 
-`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
+`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
 one text file for each author listed in authors.txt containing the specific Wikipedia page.
