@@ -1,7 +1,10 @@
-*Example Recipe: Network Visualization in Python*
+*Example Recipe: Network Visualisation in Python*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Introduction... About networks etc. Which packages?
+The following Example attempts to show how to create a simple network visualisation of authors using text files extracted from the Wikipedia. The wikipedia-module is used scrape the textfiles from, in this case the German, wikipedia. With the help of the dproWrapper we gain access to the Named Entities (NE) in each file, compare them using basic python programming and finally visualise them with the python networkx and matplotlib modules.
+The basic assumption is that a connection between two authors exists if there is a certain amount of overlap in the Named Entities we extracted from their Wikipedia articles.
+Every author is represented by a node, a connection between two authors by an edge, created when the number of overlaps passes a certain threshold.
+
 
 Setting up the Environment
 ++++++++++++++++++++++++++
