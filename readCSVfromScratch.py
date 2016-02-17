@@ -1,28 +1,11 @@
 '''
-Alternative way of reading the csv-File produced by the dproWrapper version 0.43
+Alternative way of reading the csv-File produced by the dproWrapper version 0.42
 author: MHuber
 
 '''
 
-#Schleife bauen, die B-per und I-Per zusammenfasst und in einem dict ablegt
-#
-#Vorannahme, dass Personennamen im Text zumindest durch ein Satzzeichen getrennt sind
-#nur eine Kombination aus B-Per und mindeste 1 I-Per wird als Name gespeichert
-##wegen: "Matthäus Megerle und dessen Frau Ursula ->B-BPer (geborene Wagner->BPer)"
 
-#für jeden Text eine Datei in einem Graphendatenformat abspeichern? o. on the fly generieren?
-#Gewichtungen sollten bestenfalls gleich hier vorgenommen werden
 
-'''
-Weitere Vorgehensweise:
-    1. für jedes dict einen Knoten erstellen
-    2. dicts vergleichen, bei Match Kante von dict zu dict erstellen
-    3. Graph zeichnen
-
-'''
-
-#POS-Tag: row[9]
-#NamedEntity: row[14]
 import csv
 from collections import defaultdict
 import itertools
@@ -31,18 +14,7 @@ import os
 import networkx as nx
 import matplotlib.pyplot as plt
 import re
-'''
-with open ('/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv', encoding='utf-8') as csvfile:
-    readCSV = csv.reader(csvfile, delimiter='\t')
-    print (readCSV)
-    for row in readCSV:
-        if row[14]!= "_":
-        #print(row)
-            print(row[7],row[9],row[14] )
-
-            
-'''
-
+from turtledemo.__main__ import font_sizes
 
 def neCount(inputfile):
     necounter=defaultdict(int)
@@ -62,8 +34,6 @@ def neCount(inputfile):
                     necounter[joinedLemma]+=1
                     lemma=[]
                 
-        #print(necounter['Sancta Clara'])
-    #print(necounter['Sancta Clara'])
     return necounter
     #looks like: {Name:Vorkommen,
     #             Name:Vorkommen} e.g. "Sancta Clara": 5
@@ -91,50 +61,23 @@ def createGraph():
     #print(fileList)
     for item in fileList:
         G.add_node(extractBasename(item))
-        #itemList = item.split('/')
-        #itemList = re.search('(.+?)(\.txt\.csv)', itemList[-1])
-        #itemList= itemList[-1].split('.')
-        #for item in itemList:
-            #print (item)
-        #nodeName = itemList[0]
-        #print(nodeName)
-        #nodeList.append(nodeName)
-        #G.add_node(nodeName)
+        
     for a,b in itertools.combinations(fileList,2):
-        #print (a)
-        #astr = re.search("Christoph",a)#depends on directory... not sure how to implement
-        #bstr = re.search("(?=testout\/).*(?=\.txt\.csv)",b)
-        #astr = astr.group(0)
-        #bstr = bstr.group(0)
-        
-        #so ugly
-        #aList = a.split('/')
-        #bList = b.split('/')
-        #aList = aList[-1].split('.')
-        #bList = bList[-1].split('.')
-        #aName = aList[0]
-        #bName = bList[0]
-        #print(aName +'  |  ' + bName)
-        #aName = aList[-1]
-        #bName = bList[-1]
-        
-
-
         weight = compareNECounter(neCount(a), neCount(b))
-
         if weight > 10:
             G.add_edge(extractBasename(a), extractBasename(b), {'weight': weight})
             #create edges a->b (weight)
 
-    
     print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
     
           
-#neCount("/Users/MHuber/Documents/Dariah/dariah-dkpro-wrapper-0.4.2/Abraham.csv")
-nx.draw_networkx(createGraph(), with_labels=True)
+
+
+nx.draw_circular(createGraph(), with_labels=True, node_size = 50, font_size=6, center=None)
 plt.axis('off')
-plt.savefig("graph.png")
-nx.draw_circular(createGraph(), with_labels=True)
-plt.axis('off')
-plt.savefig("graphcircular.png")
+plt.savefig("graphcircular1.png", dpi=200)
+#nx.draw_spring(createGraph(), with_labels=True, node_size = 50, font_size=6)
+#plt.axis('off')
+#plt.savefig("graphspring.png", dpi=200)
+
