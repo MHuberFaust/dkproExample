@@ -16,6 +16,17 @@ import matplotlib.pyplot as plt
 import re
 from turtledemo.__main__ import font_sizes
 
+
+## xtracts node-names from file names
+## file names look like Goethe.txt.csv
+
+def extractBasename(filePath):
+    newItem = os.path.basename(filePath)
+    newerItem = os.path.splitext(newItem)
+    newerNewerItem = os.path.splitext(newerItem[0])
+    return newerNewerItem[0]
+
+## extracts Named Entities (NE) from a csv-File genereated by dkproWrapper
 def neCount(inputfile):
     necounter=defaultdict(int)
     with open (inputfile, encoding='utf-8') as csvfile:
@@ -37,7 +48,9 @@ def neCount(inputfile):
     return necounter
     #looks like: {Name:Vorkommen,
     #             Name:Vorkommen} e.g. "Sancta Clara": 5
-          
+
+
+## compares            
 def compareNECounter(nedict1,nedict2):
     weight = 0
     for key in nedict1.keys():
@@ -46,19 +59,14 @@ def compareNECounter(nedict1,nedict2):
     print("this is the weight: " + str(weight))
     return weight
 
-def extractBasename(filePath):
-    newItem = os.path.basename(filePath)
-    newerItem = os.path.splitext(newItem)
-    newerNewerItem = os.path.splitext(newerItem[0])
-    return newerNewerItem[0]
 
+## creates a list of authors file titles
+## extracts their names: every name is represented as a node
+## if there are more than 10 matches between 2 nodes an edge is added
 def createGraph():
-    #regex =
     G=nx.Graph()
     fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
-    
-    #print("gimme dad fileList")
-    #print(fileList)
+
     for item in fileList:
         G.add_node(extractBasename(item))
         
@@ -73,11 +81,9 @@ def createGraph():
     
           
 
-
+## 
 nx.draw_circular(createGraph(), with_labels=True, node_size = 50, font_size=6, center=None)
 plt.axis('off')
-plt.savefig("graphcircular1.png", dpi=200)
-#nx.draw_spring(createGraph(), with_labels=True, node_size = 50, font_size=6)
-#plt.axis('off')
-#plt.savefig("graphspring.png", dpi=200)
+plt.savefig("graphcircular.png", dpi=200)
+
 
