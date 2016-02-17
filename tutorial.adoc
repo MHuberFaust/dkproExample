@@ -7,21 +7,20 @@ Setting up the Environment
 ++++++++++++++++++++++++++
 
 As in the examples above explained you have to install three packages to realize this recipe.
-The following command will download and install the required packages:
+Issue the following command at the command line to download and install the needed packages:
 
 ----
 pip3 install wikipedia
 pip3 install networkx
-pip3 install matplotlib.pyplot
 ----
+
+Also make sure the package __matplotlib__ is installed. For more details have a look at the Topic Modelling in Python recipe.
 
 Part 1: Crawling Wikipedia
 ++++++++++++++++++++++++++
 
-The first part of the recipe is designed for interactive use.
-It is recommended to copy the following code into a text file and interpret it by Python.
-For more clearness the whole script is divided into small parts with explanations what's going on in the single parts.
-After the package installation you can use the following import statements in your first (of two) script:
+The first part of the recipe is designed for interactive use. It is recommended to copy the following code into a text file and interpret it by Python. For more clearness the whole script is divided into small parts with explanations what is going on in the single parts.
+Use the following import statements in your first script after the first line:
 
 [source, python]
 ----
@@ -29,42 +28,55 @@ import wikipedia
 import re
 ----
 
-In the following part you will create a new text file including a list of American writers you want to set in relation.
-The function requires the path to your working directory, your desired Wikipedia page (e. g. Liste amerikanischer Schriftsteller) 
-and a section of this page (e. g. A):
+In the following part we will create a new text file including a list of persons you want to set in relation:
 
 [source, python]
 ----
 def create_authors(working_directory, wiki_page, wiki_section):
+    """
+    Gathers names from Wikipedia
+
+    :param working_directory: path to the output folder
+    :param wiki_page: e.g. Liste deutschsprachiger Lyriker
+    :param wiki_section: e.g. 12. Jahrhundert
+    :return: authors.txt
+    """
+
+    print("\nCreating authors.txt ...")
     with open(working_directory + "/authors.txt", "w", encoding='utf-8') as authors:
         full_content = wikipedia.page(wiki_page)
         selected_content = full_content.section(wiki_section)
-        only_name = re.sub("[\(\[].*?[\)\]]", "", selected_content)
+        only_name = re.sub("[ \t\r\n\f]+[\(\[].*?[\]\)]","", selected_content)  # erases characters after full name
         authors.write(only_name)
-        print("\nFollowing authors successfully saved in 'authors.txt':\n", only_name)
+        print(only_name)
 ----
 
-Now you can crawl the whole Wikipedia (in this recipe German Wikipedia) with your determined authors list:
+To crawl the Wikipedia database with your determined authors list, add the following code to your script:
 
 [source, python]
 ----
-def crawl_wikipedia(working_directory, output_directory):
-    with open(working_directory + "/authors.txt", "r", encoding="utf-8") as authors:
-        for author in list(authors):
-            print(author)
+def crawl_wikipedia(authors_file, output_directory):
+    """
+    Crawls Wikipedia with the content of authors.txt
 
+    :param authors_file: path to the previously created authors.txt
+    :param output_directory: path to the output folder
+    :return: {author}.txt
+    """
+
+    print("\nCrawling Wikipedia ...")
+    with open(authors_file, "r", encoding="utf-8") as authors:
+        for author in authors.read().splitlines():
             try:
                 page_title = wikipedia.page(author)
                 if page_title:
-                    print("Check")
-                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as author:
-                        author.write(page_title.content)
-                        print(author)
-                        print("--- DONE")
+                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as new_author:
+                        new_author.write(page_title.content)
+                        print(author + ": saved")
 
                 else:
                     print("So sad")
-                    
+
             except wikipedia.exceptions.DisambiguationError:
                 pass
             except wikipedia.exceptions.HTTPTimeoutError:
@@ -75,18 +87,32 @@ def crawl_wikipedia(working_directory, output_directory):
                 pass
 ----
 
-Now you have to call your defined functions:
+Finally we are putting everything together:
 
 [source, python]
 ----
-wikipedia.set_lang("de")  # change language
-working_directory = input("Select your working directory (authors.txt will be saved in it): ")
-create_authors(working_directory, input("Enter a Wikipedia page, for an example press enter: ") or "Liste amerikanischer Schriftsteller", input("Select one section of this page, for an example press enter: ") or "A")
-crawl_wikipedia(working_directory, input("Enter path to output folder: "))
+def main(working_directory, output_directory, wiki_page, wiki_section):
+    wikipedia.set_lang("de")    # change language
+    create_authors(working_directory, wiki_page, wiki_section)
+    crawl_wikipedia(sys.argv[2] + "/authors.txt", output_directory)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 ----
 
+To run the script type the following command in your command line:
+
+`python3 script workingdirectory outputdirectory "wikipage" "wikisection"`
+
+and press Enter.
+
+For example:
+
+`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+
 If everything worked fine you should have one text file "authors.txt" containing a list of names and in your output folder 
-one text file for each author listet in authors.txt containing the specific Wikipedia page.
+one text file for each author listed in authors.txt containing the specific Wikipedia page.
 
 Part 2: Using DKPro Wrapper and NetworkX to visualize networks
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

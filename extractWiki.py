@@ -10,51 +10,63 @@ Description: Extract information from German Wikipedia and save as txt-file
 import wikipedia
 import re
 
-# ------------------------------------------------------------
-#  Asking for input
-# ------------------------------------------------------------
 
-wikipedia.set_lang("de")
-outputFile = input("Select directory for author list: ")+("/authors.txt")
-gAuthorList = wikipedia.page(input("Enter specific Wiki page: "))
-wikiSection = input("Select a section of the page: ")
-outputDir = input("Select directory for the output files: ")
+def create_authors(working_directory, wiki_page, wiki_section):
+    """
+    Gathers names from Wikipedia
 
-# ------------------------------------------------------------
-#  Extract names and save in ~/authors.txt
-# ------------------------------------------------------------
+    :param working_directory: path to the output folder
+    :param wiki_page: e.g. Liste deutschsprachiger Lyriker
+    :param wiki_section: e.g. 12. Jahrhundert
+    :return: authors.txt
+    """
 
-with open(outputFile, "w", encoding='utf-8') as f:
-    wikiPage = gAuthorList.section(wikiSection)
-    poets = re.sub("[\(\[].*?[\)\]]", "", wikiPage)
-    f.write(poets)
-    print("\nFollowing authors successfully saved in 'authors.txt':")
-    print(poets)
+    print("\nCreating authors.txt ...")
+    with open(working_directory + "/authors.txt", "w", encoding='utf-8') as authors:
+        full_content = wikipedia.page(wiki_page)
+        selected_content = full_content.section(wiki_section)
+        only_name = re.sub("[ \t\r\n\f]+[\(].*?[\)]","", selected_content)  # erases characters after full name
+        authors.write(only_name)
+        print(only_name)
 
-with open(outputFile, "r", encoding='utf-8') as f:
-    for author in list(f):
-        print(author)
 
-# ------------------------------------------------------------
-#  Skipping errors
-# ------------------------------------------------------------
+def crawl_wikipedia(authors_file, output_directory):
+    """
+    Crawls Wikipedia with the content of authors.txt
 
-        try:
-            pageContent = wikipedia.page(author)
-        except wikipedia.exceptions.DisambiguationError:
-            pass
-        except wikipedia.exceptions.PageError:
-            continue
+    :param authors_file: path to the previously created authors.txt
+    :param output_directory: path to the output folder
+    :return: {author}.txt
+    """
 
-        if pageContent:
-            print("Check")
-        else:
-            print("So sad")
+    print("\nCrawling Wikipedia ...")
+    with open(authors_file, "r", encoding="utf-8") as authors:
+        for author in authors.read().splitlines():
+            try:
+                page_title = wikipedia.page(author)
+                if page_title:
+                    with open(output_directory + "/" + author + ".txt", "w", encoding='utf-8') as new_author:
+                        new_author.write(page_title.content)
+                        print(author + ": saved")
 
-# ------------------------------------------------------------
-#  Creating a file for each author including the wiki content
-# ------------------------------------------------------------
+                else:
+                    print("So sad")
 
-        with open(outputDir+"/"+re.sub("\s", "", author)+".txt", "w", encoding='utf-8') as f:
-            f.write(pageContent.content.replace("=", "").replace("==", "").replace("===", "").replace("Bearbeiten", ""))
-            print(author + "---DONE\n")
+            except wikipedia.exceptions.DisambiguationError:
+                pass
+            except wikipedia.exceptions.HTTPTimeoutError:
+                pass
+            except wikipedia.exceptions.RedirectError:
+                pass
+            except wikipedia.exceptions.PageError:
+                pass
+
+
+def main(working_directory, output_directory, wiki_page, wiki_section):
+    wikipedia.set_lang("de")    # change language
+    create_authors(working_directory, wiki_page, wiki_section)
+    crawl_wikipedia(sys.argv[2] + "/authors.txt", output_directory)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
