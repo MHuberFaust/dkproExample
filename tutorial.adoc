@@ -210,7 +210,8 @@ def create_graph(input_folder):
     return G
 ----
 
-So we can draw it:
+The following code lastly can be understood as the main() function, which
+calls the previously defined functions after having the user select an input and output folder:
 
 [source, python]
 ----
