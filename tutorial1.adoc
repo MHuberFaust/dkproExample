@@ -230,7 +230,7 @@ Output
 ++++++
 Your output could look like this:
 
-image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular.png?raw=true[image]
+image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular2.png?raw=true[image]
 
 
 Discussion
