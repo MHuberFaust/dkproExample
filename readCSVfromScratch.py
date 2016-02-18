@@ -21,10 +21,10 @@ from turtledemo.__main__ import font_sizes
 ## file names look like Goethe.txt.csv
 
 def extractBasename(filePath):
-    newItem = os.path.basename(filePath)
-    newerItem = os.path.splitext(newItem)
-    newerNewerItem = os.path.splitext(newerItem[0])
-    return newerNewerItem[0]
+    fileName_txt_csv = os.path.basename(filePath)
+    fileName_txt = os.path.splitext(fileName_txt_csv)
+    fileName = os.path.splitext(fileName_txt[0])
+    return fileName[0]
 
 ## extracts Named Entities (NE) from a csv-File genereated by dkproWrapper
 def neCount(inputfile):
