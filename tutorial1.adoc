@@ -93,7 +93,7 @@ def crawl_wikipedia(authors_file, output_directory):
                 pass
 ----
 
-Finally we are putting everything together:
+Finally we are putting everything together. For the case you worked with `create_authors` use the following main-part:
 
 [source, python]
 ----
@@ -116,6 +116,30 @@ and press Enter.
 For example:
 
 `python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+
+In case you already had a text file like __authors.txt__ use this main-part:
+
+[source, python]
+----
+def main(authors_file, output_directory):
+    wikipedia.set_lang("de")    # change language
+    crawl_wikipedia(authors_file, output_directory)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2])
+----
+
+To run the script type the following command in your command line:
+
+`python3 script authorsfile outputdirectory`
+
+and press Enter.
+
+For example:
+
+`python3 /users/networks/crawler.py /users/networks/my_own_file.txt /users/networks/wikis`
+
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names in your working directory. In your output folder 
 there should be one text file for each author listed in authors.txt containing the specific Wikipedia page.
@@ -210,21 +234,34 @@ def createGraph(input_folder):
     return G
 ----
 
-The following code lastly can be understood as the main() function, which
+The following code lastly is the main() function, which
 calls the previously defined functions after having the user select an input and output folder:
 
 [source, python]
 ----
-input_folder = input("Select input folder: ") + "/*"
-output_folder = input("Select output folder: ")
+def main(input_folder, output_folder):
+    nx.draw_networkx(create_graph(input_folder + "/*"), with_labels=True)
+    plt.axis('off')
+    plt.savefig(output_folder + "/graph.png")
+    nx.draw_circular(create_graph(input_folder)), with_labels=True)
+    plt.axis('off')
+    plt.savefig(output_folder + "/circular.png")
+    
 
-nx.draw_networkx(create_graph(input_folder), with_labels=True)
-plt.axis('off')
-plt.savefig(output_folder + "/graph.png")
-nx.draw_circular(create_graph(input_folder)), with_labels=True)
-plt.axis('off')
-plt.savefig(output_folder + "/circular.png")
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2])
 ----
+
+To run the script type the following command in your command line:
+
+`python3 script inputfolder outputfolder`
+
+and press Enter.
+
+For example:
+
+`python3 /users/networks/graph.py /users/networks/wikis /users/networks`
 
 Output
 ++++++
