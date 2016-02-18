@@ -193,9 +193,9 @@ Finally, creating the graph:
 
 [source, python]
 ----
-def createGraph():
+def createGraph(input_folder):
     G=nx.Graph()
-    fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
+    fileList=glob.glob(input_folder)
 
     for item in fileList:
         G.add_node(extractBasename(item))
