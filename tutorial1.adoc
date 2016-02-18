@@ -144,11 +144,11 @@ To label the nodes for the graph, this function extracts the names by removing t
 
 [source, python]
 ----
-def extract_basename(file_path):
-    new_item = os.path.basename(file_path)
-    newer_item = os.path.splitext(new_item)
-    newer_newer_item = os.path.splitext(newer_item[0])
-    return newer_newer_item[0]
+def extractBasename(filePath):
+    fileName_txt_csv = os.path.basename(filePath)
+    fileName_txt = os.path.splitext(fileName_txt_csv)
+    fileName = os.path.splitext(fileName_txt[0])
+    return fileName[0]
 ----
 
 The following function ingests the annotated file and extracts every Named Entity. In the process first name and last name(s) or base name and extensions are merged. The .csv file marks first names and base names as B-Per and last names and extensions as I-Per. The function saves both B-PER 
@@ -193,25 +193,18 @@ Finally, creating the graph:
 
 [source, python]
 ----
-def create_graph(input_folder):
-    G = nx.Graph()
-    file_list = glob.glob(input_folder)
+def createGraph():
+    G=nx.Graph()
+    fileList=glob.glob('/Users/MHuber/Documents/Dariah/dkproExample/testout/*')
 
-    for item in file_list:
-        G.add_node(extract_basename(item))
+    for item in fileList:
+        G.add_node(extractBasename(item))
         
-    for a, b in itertools.combinations(file_list, 2):
-        #a_list = a.split('/')
-        #b_list = b.split('/')
-        #a_list = a_list[-1].split('.')
-        #b_list = b_list[-1].split('.')
-        #a_name = a_list[0]
-        #b_name = b_list[0]
-        #print(a_name +'  |  ' + b_name)
-
-        weight = compare_ne_counter(ne_count(a), ne_count(b))
+    for a,b in itertools.combinations(fileList,2):
+        weight = compareNECounter(neCount(a), neCount(b))
         if weight > 10:
-            G.add_edge(a_name, b_name, {'weight': weight})
+            G.add_edge(extractBasename(a), extractBasename(b), {'weight': weight})
+            #create edges a->b (weight)
 
     print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
