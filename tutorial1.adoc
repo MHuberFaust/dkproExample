@@ -132,13 +132,13 @@ if __name__ == "__main__":
 
 To run the script type the following command in your command line:
 
-`python3 script workingdirectory outputdirectory "wikipage" "wikisection"`
+`python3 script authorsfile outputdirectory`
 
 and press Enter.
 
 For example:
 
-`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+`python3 /users/networks/crawler.py /users/networks/my_own_file.txt /users/networks/wikis`
 
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names in your working directory. In your output folder 
