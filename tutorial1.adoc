@@ -93,7 +93,7 @@ def crawl_wikipedia(authors_file, output_directory):
                 pass
 ----
 
-Finally we are putting everything together:
+Finally we are putting everything together. For the case you worked with `create_authors` use the following main-part:
 
 [source, python]
 ----
@@ -116,6 +116,30 @@ and press Enter.
 For example:
 
 `python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+
+In case you already had a text file like __authors.txt__ use this main-part:
+
+[source, python]
+----
+def main(authors_file, output_directory):
+    wikipedia.set_lang("de")    # change language
+    crawl_wikipedia(authors_file, output_directory)
+
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2])
+----
+
+To run the script type the following command in your command line:
+
+`python3 script workingdirectory outputdirectory "wikipage" "wikisection"`
+
+and press Enter.
+
+For example:
+
+`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+
 
 If everything worked fine you should have one text file "authors.txt" containing a list of names in your working directory. In your output folder 
 there should be one text file for each author listed in authors.txt containing the specific Wikipedia page.
