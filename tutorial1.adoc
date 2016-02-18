@@ -234,21 +234,34 @@ def createGraph(input_folder):
     return G
 ----
 
-The following code lastly can be understood as the main() function, which
+The following code lastly is the main() function, which
 calls the previously defined functions after having the user select an input and output folder:
 
 [source, python]
 ----
-input_folder = input("Select input folder: ") + "/*"
-output_folder = input("Select output folder: ")
+def main(input_folder, output_folder):
+    nx.draw_networkx(create_graph(input_folder + "/*"), with_labels=True)
+    plt.axis('off')
+    plt.savefig(output_folder + "/graph.png")
+    nx.draw_circular(create_graph(input_folder)), with_labels=True)
+    plt.axis('off')
+    plt.savefig(output_folder + "/circular.png")
+    
 
-nx.draw_networkx(create_graph(input_folder), with_labels=True)
-plt.axis('off')
-plt.savefig(output_folder + "/graph.png")
-nx.draw_circular(create_graph(input_folder)), with_labels=True)
-plt.axis('off')
-plt.savefig(output_folder + "/circular.png")
+if __name__ == "__main__":
+    import sys
+    main(sys.argv[1], sys.argv[2])
 ----
+
+To run the script type the following command in your command line:
+
+`python3 script inputfolder outputfolder`
+
+and press Enter.
+
+For example:
+
+`python3 /users/networks/graph.py /users/networks/wikis /users/networks`
 
 Output
 ++++++
