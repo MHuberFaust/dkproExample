@@ -172,6 +172,11 @@ To label the nodes for the graph, this function extracts the names by removing t
 [source, python]
 ----
 def extract_basename(file_path):
+    """
+    Extracts names
+    :param file_path: path to {author}.txt
+    :return: name without any extensions
+    """
     file_name_txt_csv = os.path.basename(file_path)
     file_name_txt = os.path.splitext(file_name_txt_csv)
     file_name = os.path.splitext(file_name_txt[0])
@@ -184,9 +189,14 @@ and I-PER in a dictionary. Only B-PER or a B-PER followed by any combination of 
 [source, python]
 ----
 def ne_count(input_file):
+    """
+    Extracts only Named Entities
+    :param input_file: path to {author}.txt.csv file
+    :return: only NEs column as dictionary
+    """
     ne_counter = defaultdict(int)
-    with open (input_file, encoding='utf-8') as csv_file:
-        read_csv = csv.DictReader(csv_file, delimiter = '\t', quoting = csv.QUOTE_NONE)
+    with open(input_file, encoding='utf-8') as csv_file:
+        read_csv = csv.DictReader(csv_file, delimiter='\t', quoting=csv.QUOTE_NONE)
         lemma = []
 
         for row in read_csv:
@@ -195,7 +205,7 @@ def ne_count(input_file):
             else:
                 if lemma:
                     joined_lemma = ' '.join(lemma)
-                    ne_counter[joined_lemma]+=1
+                    ne_counter[joined_lemma] += 1
                     lemma = []
 
     return ne_counter
@@ -206,10 +216,16 @@ This one is used to compare the dictionaries created above. It returns the numbe
 [source, python]
 ----
 def compare_ne_counter(ne_dict1, ne_dict2):
+    """
+    Compares two dictionaries
+    :param ne_dict1: {author}
+    :param ne_dict2: {author}
+    :return: weight of a relationship
+    """
     weight = 0
     for key in ne_dict1.keys():
         if key in ne_dict2.keys():
-            weight+=1
+            weight += 1
     print("this is the weight: " + str(weight))
     return weight
 ----
@@ -220,19 +236,24 @@ Finally, creating the graph:
 [source, python]
 ----
 def create_graph(input_folder):
-    G=nx.Graph()
-    file_list=glob.glob(input_folder)
+    """
+    Creates graph including nodes and edges
+    :param input_folder: path to folder with .csv-files
+    :return: graph
+    """
+    G = nx.Graph()
+    file_list = glob.glob(input_folder)
 
     for item in file_list:
         G.add_node(extract_basename(item))
-        
-    for a,b in itertools.combinations(file_list,2):
+
+    for a, b in itertools.combinations(file_list, 2):
         weight = compare_ne_counter(ne_count(a), ne_count(b))
         if weight > 10:
             G.add_edge(extract_basename(a), extract_basename(b), {'weight': weight})
-            #create edges a->b (weight)
+            # create edges a->b (weight)
 
-    print ("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
+    print("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
 ----
 
@@ -242,13 +263,18 @@ calls the previously defined functions after having the user select an input and
 [source, python]
 ----
 def main(input_folder, output_folder):
-    nx.draw_networkx(create_graph(input_folder + "/*"), with_labels=True)
+    G = create_graph(input_folder + "/*")
+    pos = nx.spring_layout(G)
+    nx.draw_networkx_labels(G, pos, font_size='8', font_color='r')
+    nx.draw_networkx_edges(G, pos, alpha=0.1)
     plt.axis('off')
     plt.savefig(output_folder + "/graph.png")
-    nx.draw_circular(create_graph(input_folder), with_labels=True)
-    plt.axis('off')
-    plt.savefig(output_folder + "/circular.png")
-    
+
+    # Circular drawing:
+    # nx.draw_circular(G, with_labels=True)
+    # plt.axis('off')
+    # plt.savefig(output_folder + "/circular.png")
+
 
 if __name__ == "__main__":
     import sys
@@ -267,6 +293,17 @@ For example:
 
 Output
 ++++++
-Your output could look like this:
+Your output is a *.png file* and should look like one of these. For relations of poets of the 12th century:
+image:https://github.com/severinsimmler/dkproExample/blob/master/12th_century.png?raw=true[image]
+
+For the 13th century:
+image:https://github.com/severinsimmler/dkproExample/blob/master/13th_century.png?raw=true[image]
+
+
+If you draw a circular graph it could look like this:
 
 image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular2.png?raw=true[image]
+
+This recipe also works with other languages, e.g. English. You have to update the main part of the `create_authors` function and one possible output could look like this for `"List of English-language poets" "A":
+
+image:https://github.com/severinsimmler/dkproExample/blob/master/american_a.png?raw=true[image]
