@@ -118,7 +118,7 @@ and press Enter.
 
 For example:
 
-`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "20. Jahrhundert"`
+`python3 /users/networks/crawler.py /users/networks /users/networks/wikis "Liste deutschsprachiger Lyriker" "12. Jahrhundert"`
 
 In case you already had a text file like __authors.txt__ use this main-part:
 
@@ -167,21 +167,6 @@ import matplotlib.pyplot as plt
 import re
 ----
 
-To label the nodes for the graph, this function extracts the names by removing the extensions of each author's file names:
-
-[source, python]
-----
-def extract_basename(file_path):
-    """
-    Extracts names
-    :param file_path: path to {author}.txt
-    :return: name without any extensions
-    """
-    file_name_txt_csv = os.path.basename(file_path)
-    file_name_txt = os.path.splitext(file_name_txt_csv)
-    file_name = os.path.splitext(file_name_txt[0])
-    return file_name[0]
-----
 
 The following function ingests the annotated file and extracts every Named Entity. In the process first name and last name(s) or base name and extensions are merged. The *.csv file* marks first names and base names as B-PER and last names and extensions as I-PER. The function saves both B-PER 
 and I-PER in a dictionary. Only B-PER or a B-PER followed by any combination of I-PER will be saved as one full name.
@@ -228,6 +213,23 @@ def compare_ne_counter(ne_dict1, ne_dict2):
             weight += 1
     print("this is the weight: " + str(weight))
     return weight
+----
+
+
+To label the nodes for the graph, this function extracts the names by removing the extensions of each author's file names:
+
+[source, python]
+----
+def extract_basename(file_path):
+    """
+    Extracts names
+    :param file_path: path to {author}.txt
+    :return: name without any extensions
+    """
+    file_name_txt_csv = os.path.basename(file_path)
+    file_name_txt = os.path.splitext(file_name_txt_csv)
+    file_name = os.path.splitext(file_name_txt[0])
+    return file_name[0]
 ----
 
 
