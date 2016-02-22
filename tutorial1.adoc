@@ -306,6 +306,6 @@ If you draw a circular graph it could look like this:
 
 image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular2.png?raw=true[image]
 
-This recipe also works with other languages, e.g. English. You have to update the main part of the `create_authors` function and one possible output could look like this for `"List of English-language poets" "A":
+This recipe also works with other languages, e.g. English. You have to update the main part of the `create_authors` function and one possible output could look like this for `"List of English-language poets" "A"`:
 
 image:https://github.com/severinsimmler/dkproExample/blob/master/american_a.png?raw=true[image]
