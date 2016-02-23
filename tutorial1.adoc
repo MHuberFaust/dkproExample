@@ -1,7 +1,7 @@
 *Example Recipe: Network Visualisation in Python*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following Example attempts to show how to create a simple network visualisation of authors by using text files extracted from the Wikipedia. The link:https://pypi.python.org/pypi/wikipedia[Wikipedia API] for Python is used to scrape the content from, in this case the German, Wikipedia as plain text. With the help of the link:https://github.com/DARIAH-DE/DARIAH-DKPro-Wrapper/releases[DARIAH DKPro Wrapper] we gain access to the Named Entities (NE) in each file, compare them using basic Python programming and finally visualise them with the Python link:https://networkx.github.io[NetworkX] and link:http://matplotlib.org[matplotlib] packages.
+The following example attempts to show how to create a simple network visualisation of authors by using text files extracted from Wikipedia. The link:https://pypi.python.org/pypi/wikipedia[Wikipedia API] for Python is used to scrape the content from, in this case the German, Wikipedia as plain text. With the help of the link:https://github.com/DARIAH-DE/DARIAH-DKPro-Wrapper/releases[DARIAH DKPro Wrapper] we gain access to the Named Entities (NE) in each file, compare them using basic Python programming and finally visualise them with the Python link:https://networkx.github.io[NetworkX] and link:http://matplotlib.org[matplotlib] packages.
 The basic assumption is that a connection between two authors exists if there is a certain amount of overlap in the Named Entities we extracted from their Wikipedia articles.
 Every author is represented by a node, a connection between two authors by an edge which is created when the number of overlaps passes a certain threshold.
 
@@ -12,7 +12,7 @@ Setting up the Environment
 ++++++++++++++++++++++++++
 
 As explained in the example above //Link einfügen! you have to install three packages to realise this recipe.
-Issue the following command at the command line to download and install the needed packages:
+Issue the following command in the command line to download and install the needed packages:
 
 ----
 pip3 install wikipedia
@@ -24,7 +24,7 @@ Also make sure the package __matplotlib__ is installed. For more details have a 
 Part 1: Crawling Wikipedia
 ++++++++++++++++++++++++++
 
-The first part of the recipe is designed for interactive use. It is recommended to copy the following code into a text file and interpret it by Python. For more clearness the whole script is divided into small parts with explanations what is going on in the single parts.
+The first part of the recipe is designed for interactive use. It is recommended to copy the following code into a text file and interpret it with Python. For more clearness the whole script is divided into small parts with explanations on what is going on in the single parts.
 Use the following `import` statements in your first script after the first line:
 
 [source, python]
@@ -57,7 +57,7 @@ def create_authors(working_directory, wiki_page, wiki_section):
 ----
 
 As Wikipedia happens to consist of living documents we provide a snapshot of a list of authors: //insert authors.txt
-Alternatively, you can provide your own list of authors (make sure you use the exact name used by Wikipedia).
+Alternatively, you can create your own list of authors (make sure you use the exact name used by Wikipedia).
 
 
 To crawl the Wikipedia database with your determined authors list, add the following code to your script:
@@ -96,7 +96,7 @@ def crawl_wikipedia(authors_file, output_directory):
                 pass
 ----
 
-Finally we are putting everything together. For the case you worked with `create_authors` function use the following main-part:
+Finally we are putting everything together. In case you have worked with the `create_authors` function use the following main-part:
 
 [source, python]
 ----
@@ -196,7 +196,7 @@ def ne_count(input_file):
     return ne_counter
 ----
 
-This one is used to compare the dictionaries created above. It returns the number of matches which will be used to determine if and edge between two authors will be drawn:
+This one is used to compare the dictionaries created above. It returns the number of matches which will be used to determine if an edge between two authors will be drawn:
 
 [source, python]
 ----
@@ -216,7 +216,7 @@ def compare_ne_counter(ne_dict1, ne_dict2):
 ----
 
 
-To label the nodes for the graph, this function extracts the names by removing the extensions of each author's file names:
+To label the nodes for the graph, this function extracts the names by removing the extensions of each author's file name:
 
 [source, python]
 ----
