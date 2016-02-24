@@ -59,6 +59,20 @@ def create_authors(working_directory, wiki_page, wiki_section):
 As Wikipedia happens to consist of living documents we provide a snapshot of a list of authors: //insert authors.txt
 Alternatively, you can create your own list of authors (make sure you use the exact name used by Wikipedia).
 
+Output:
++++++++
+----
+Creating authors.txt ...
+Dietmar von Aist
+Friedrich von Hausen
+Heinrich von Rugge
+Heinrich von Veldeke
+Herger
+Der von Kürenberg
+Meinloh von Sevelingen
+Rudolf von Fenis
+Spervogel
+----
 
 To crawl the Wikipedia database with your determined authors list, add the following code to your script:
 
@@ -95,6 +109,23 @@ def crawl_wikipedia(authors_file, output_directory):
             except wikipedia.exceptions.PageError:
                 pass
 ----
+
+Output:
++++++++
+
+----
+Crawling Wikipedia ...
+Dietmar von Aist: saved
+Friedrich von Hausen: saved
+Heinrich von Rugge: saved
+Heinrich von Veldeke: saved
+Herger: saved
+Der von Kürenberg: saved
+Meinloh von Sevelingen: saved
+Rudolf von Fenis: saved
+Spervogel: saved
+----
+
 
 Finally we are putting everything together. In case you have worked with the `create_authors` function use the following main-part:
 
@@ -258,6 +289,34 @@ def create_graph(input_folder):
     print("Number of nodes:", G.number_of_nodes(), "  Number of edges: ", G.number_of_edges())
     return G
 ----
+
+Output:
++++++++
+----
+this is the weight: 20
+this is the weight: 11
+this is the weight: 15
+this is the weight: 7
+this is the weight: 5
+this is the weight: 9
+this is the weight: 12
+this is the weight: 18
+this is the weight: 16
+this is the weight: 10
+this is the weight: 10
+this is the weight: 14
+this is the weight: 7
+this is the weight: 8
+this is the weight: 11
+this is the weight: 9
+this is the weight: 9
+this is the weight: 9
+this is the weight: 9
+this is the weight: 8
+this is the weight: 8
+Number of nodes: 7   Number of edges:  8
+----
+
 
 The following code lastly is the main() function, which
 calls the previously defined functions after having the user select an input and output folder:
