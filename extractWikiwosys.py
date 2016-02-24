@@ -65,6 +65,6 @@ def crawl_wikipedia(authors_file, output_directory):
 def main(working_directory, wiki_page, wiki_section, output_directory):
     wikipedia.set_lang("de")    # change language
     create_authors(working_directory, wiki_page, wiki_section)
-    crawl_wikipedia(output_directory + "/authors.txt", output_directory)
+    crawl_wikipedia(working_directory + "/authors.txt", output_directory)
 
 main(r"/Users/MHuber/Documents/Dariah/dkproExample", r"Liste_deutschsprachiger_Lyriker", r"A", r"/Users/MHuber/Documents/Dariah/dkproExample")
