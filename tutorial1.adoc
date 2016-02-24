@@ -131,6 +131,7 @@ Finally we are putting everything together. In case you have worked with the `cr
 
 [source, python]
 ----
+# was ist working_directory, output_directory usw.?
 def main(working_directory, output_directory, wiki_page, wiki_section):
     wikipedia.set_lang("de")    # change language
     create_authors(working_directory, wiki_page, wiki_section)
