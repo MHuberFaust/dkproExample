@@ -52,7 +52,7 @@ def main(working_directory, output_directory, wiki_page, wiki_section):
 
     wikipedia.set_lang("de")    # change language
     create_authors(working_directory, wiki_page, wiki_section)
-    crawl_wikipedia(sys.argv[2] + "/authors.txt", output_directory)
+    crawl_wikipedia(sys.argv[1] + "/authors.txt", output_directory)
 
 if __name__ == "__main__":
     import sys
