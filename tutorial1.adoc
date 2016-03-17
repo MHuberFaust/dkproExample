@@ -50,7 +50,8 @@ def create_authors(working_directory, wiki_page, wiki_section):
         print(only_name)
 ----
 
-As Wikipedia happens to consist of living documents we provide a snapshot of a list of authors: //insert authors.txt
+As Wikipedia happens to consist of living documents we provide a snapshot of a list of authors: link:https://github.com/MHuberFaust/dkproExample/blob/master/author.txt[author.txt]
+
 Alternatively, you can create your own list of authors (make sure you use the exact name used by Wikipedia).
 
 
@@ -180,12 +181,12 @@ For example:
 If everything worked fine you should have one text file *authors.txt* containing a list of names in your working directory. In your output folder there should be one text file for each author listed in *authors.txt* containing the specific Wikipedia page.
 
 
-Part 2: Using DKPro Wrapper and NetworkX to visualise networks
+Part 2: Using DKPro Wrapper and NetworkX to visualize networks
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 In the second part of the recipe you will analyze your previously created text files with the DKPro-Wrapper. 
 How to process a collection of files in the same folder is explained link:#InputFolders[further above].
-After creating a *.csv file* for each text file you ingest it in Python after importing the required packages. 
+After creating a *.csv file* for each text file you use Python for further work on your files. Make sure you import the different modules first.
 Create the second (and last) script starting after the first line with:
 
 [source, python]
@@ -313,7 +314,8 @@ def main(input_folder, output_folder):
     """
     
     G = create_graph(input_folder + "/*")
-    # In case of circular drawing place '#' before every line of the remaining block
+    # If you want to create a circular graph, add '#' in front of every line of the following block,
+    # erase the '#' of the three lines after 'Circular drawing', and run the script (again)
     pos = nx.spring_layout(G)
     nx.draw_networkx_labels(G, pos, font_size='8', font_color='r')
     nx.draw_networkx_edges(G, pos, alpha=0.1)
@@ -363,4 +365,4 @@ image:https://github.com/severinsimmler/dkproExample/blob/master/american_a.png?
 
 Discussion
 ++++++++++
-In this recipe we created a visualization of an author's social network using the output of the DARIAH-DKPro-Wrapper and two simple Python scripts. [Add some more]
+In this recipe we created a visualization of an author's social network using the output of the DARIAH-DKPro-Wrapper and two simple Python scripts to gain knowledge about the authors' relations. This is a great starting point for further research as the existing relations can now be examined more closely. The graphs might even hint at certain connections that have not been made yet. This kind of analysis therefore provides a groundwork and direction for further investigations on the topic.
