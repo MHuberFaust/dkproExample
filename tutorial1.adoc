@@ -181,7 +181,7 @@ For example:
 If everything worked fine you should have one text file *authors.txt* containing a list of names in your working directory. In your output folder there should be one text file for each author listed in *authors.txt* containing the specific Wikipedia page.
 
 
-Part 2: Using DKPro Wrapper and NetworkX to visualise networks
+Part 2: Using DKPro Wrapper and NetworkX to visualize networks
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 In the second part of the recipe you will analyze your previously created text files with the DKPro-Wrapper. 
