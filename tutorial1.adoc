@@ -356,7 +356,7 @@ image:https://github.com/severinsimmler/dkproExample/blob/master/13th_century.pn
 
 If you draw a circular graph it could look like this:
 
-image:https://github.com/MHuberFaust/dkproExample/blob/master/graphcircular2.png?raw=true[image]
+image:https://github.com/severinsimmler/dkproExample/blob/master/circular_new.png[image]
 
 This recipe also works with other languages, e.g. English. You have to update the main part of the `create_authors` function and one possible output could look like this for `"List of English-language poets" "A"`:
 
