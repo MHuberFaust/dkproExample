@@ -181,7 +181,7 @@ For example:
 If everything worked fine you should have one text file *authors.txt* containing a list of names in your working directory. In your output folder there should be one text file for each author listed in *authors.txt* containing the specific Wikipedia page.
 
 
-Part 2: Using DKPro Wrapper and NetworkX to visualise networks
+Part 2: Using DKPro Wrapper and NetworkX to visualize networks
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 In the second part of the recipe you will analyze your previously created text files with the DKPro-Wrapper. 
@@ -365,4 +365,4 @@ image:https://github.com/severinsimmler/dkproExample/blob/master/american_a.png?
 
 Discussion
 ++++++++++
-In this recipe we created a visualization of an author's social network using the output of the DARIAH-DKPro-Wrapper and two simple Python scripts to gain knowledge about the authors' relations. This is a great starting point for further research as the existing relations can now be examined more closely. The graphs might even hint at certain connections that have not been made yet. This kind of analysis therefore provides a groundwork and direction for further investigations on the topic, because the information here might be differently structured than previously assumed. [Add some more]
+In this recipe we created a visualization of an author's social network using the output of the DARIAH-DKPro-Wrapper and two simple Python scripts to gain knowledge about the authors' relations. This is a great starting point for further research as the existing relations can now be examined more closely. The graphs might even hint at certain connections that have not been made yet. This kind of analysis therefore provides a groundwork and direction for further investigations on the topic. [Add some more]
