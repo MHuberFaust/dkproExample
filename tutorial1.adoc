@@ -51,6 +51,7 @@ def create_authors(working_directory, wiki_page, wiki_section):
 ----
 
 As Wikipedia happens to consist of living documents we provide a snapshot of a list of authors: link:https://github.com/MHuberFaust/dkproExample/blob/master/author.txt[author.txt]
+
 Alternatively, you can create your own list of authors (make sure you use the exact name used by Wikipedia).
 
 
