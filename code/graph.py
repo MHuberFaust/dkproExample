@@ -83,7 +83,7 @@ def main(input_folder, output_folder):
     plt.savefig(output_folder + "/graph.png")
 
     # Circular drawing:
-    # nx.draw_circular(G, with_labels=True, alpha=0.3)
+    # nx.draw_circular(G, with_labels=True, alpha=0.3, font_size='8')
     # plt.axis('off')
     # plt.savefig(output_folder + "/circular.png")
 
