@@ -46,7 +46,7 @@ def extract_basename(file_path):
     file_name_txt_csv = os.path.basename(file_path)
     file_name_txt = os.path.splitext(file_name_txt_csv)
     file_name = os.path.splitext(file_name_txt[0])
-    return file_name[0]
+    return file_name[0].rstrip()
 
 
 def create_graph(input_folder):
